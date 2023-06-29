@@ -1,0 +1,9 @@
+{
+    "status": true,
+    "data": {
+      "email": "user@example.com",
+      "username": "JohnDoe",
+      "password": "JohnDoe123"
+    }
+  }
+  

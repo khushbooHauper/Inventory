@@ -1,0 +1,18 @@
+.product{
+    .top-box{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 50px;
+        .search{
+            border: none;
+            background-color:#FADCD9;
+            border-radius: 10px;
+            padding: 5px 18px;
+        }
+        .myicon-search{
+            position: relative;
+            right: -196px;
+        }
+    }
+}
