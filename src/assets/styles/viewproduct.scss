@@ -1,0 +1,48 @@
+.product-details-container {
+    display: flex;
+  
+    .product-images {
+      flex: 1;
+  
+      .img-display {
+        margin-bottom: 1rem;
+  
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
+  
+      .img-select {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+  
+        .img-item {
+          width: 80px;
+          height: 80px;
+          border: 1px solid #ccc;
+          cursor: pointer;
+  
+          &.active {
+            border-color: blue;
+          }
+  
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+  
+    .product-info {
+      flex: 1;
+      padding: 20px;
+      p {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+  

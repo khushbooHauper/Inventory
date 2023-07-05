@@ -1,86 +1,57 @@
-.container {
-  // background: linear-gradient(to left, rgb(207, 143, 151), white);
-  color: white;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.login-form {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   height: 100vh;
-  width: 100%;
-}
-
-.form-box {
-  width: 380px;
-  height: 450px;
-  background-color: black;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  opacity: 0.5;
-  border-radius: 2%;
-}
-
-.body-form {
-  position: relative; /* Add position relative for eye icon positioning */
- .error-message{
-  color:red;
- }
-  .eye-icon {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    height: 100%;
-    top: 0;
-    right: 0;
-    padding-right: 10px;
-    z-index: 1000;
-    color: rgb(183, 39, 39);
-    cursor: pointer;
-  }
-
-  .input-group-text {
-    height: 37px;
+  background: linear-gradient(to left, rgb(213, 191, 194), white);
+  form {
+    width: 300px;
+  
+    .form-group {
+      margin-bottom: 20px;
+      .error-message{
+        color: red;
+        font-size: 10px;
+        padding: 10px;
+      }
+      label {
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+      }
+      
+    }
     
-  }
-
-  .input-group {
-    margin-bottom: 15px; /* Adjust margin bottom for spacing between input groups */
+    .password-input {
+      position: relative;
+      
+      input {
+        padding-right: 30px;
+      }
+      
+      i {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
+      
+    }
     
+    button {
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   }
-
-  .form-control {
-    border-radius: 5px; /* Set a border-radius value for the input fields */
-  }
-}
-
-.header-form {
-  margin-bottom: 15px;
-}
-
-button {
-  margin-top: 40px;
-  margin-bottom: 10px;
-}
-
-.message {
-  display: flex;
-  justify-content: space-between;
-}
-
-.social {
-  display: flex;
-  justify-content: space-around;
-  padding: 30px;
-}
-
-.social i {
-  font-size: 35px;
-}
-
-.social i:hover {
-  color: black;
-  cursor: pointer;
 }
