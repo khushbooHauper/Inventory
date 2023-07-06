@@ -6,7 +6,7 @@
         padding: 30px;
         .search{
             border: none;
-            background-color:#FADCD9;
+            background-color:#e9f0f7;
             border-radius: 10px;
             padding: 5px 18px;
         }
@@ -15,4 +15,21 @@
             right: -196px;
         }
     }
+    /* Media query for small screens */
+@media screen and (max-width: 768px) {
+    .top-box {
+      flex-direction: column; /* Change the direction to stack vertically */
+      padding: 20px; /* Adjust the padding */
+    }
+
+    .search {
+      margin-bottom: 10px; /* Add some space between search input and button */
+    }
+
+    .myicon-search {
+      right: 0; /* Reset the position */
+    }
+  }
 }
+
+

@@ -3,17 +3,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Product {
   id: number;
-  sku: string;
   name: string;
-  price: string | number;
+  brand:  string;
+  model:string;
+  modelNumber:number | null;
+  sku: string;
   des: string;
+  selectedImages:  File[] | string[];
   category: string;
   subcategory: string;
-  quantity: string | number;
-  weight: string | number;
-  selectedImages:  File[] | string[];
   status: string;
-}
+  price: number | null;
+  weight: number | null;
+  dimensions:string;
+  manufacturer:string;
+  quantity: number | null;
+ }
 
 interface ProductState {
   products: Product[];

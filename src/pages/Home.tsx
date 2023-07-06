@@ -1,24 +1,30 @@
-import React, { useContext } from 'react';
-import { Card } from 'react-bootstrap';
-import { InventoryContext } from '../context/InventoryContext';
-import '../assets/styles/home.scss';
+import React from "react";
+import { Card } from "react-bootstrap";
+import "../assets/styles/home.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 const Home = () => {
-  const { products } = useContext(InventoryContext);
+  const products = useSelector((state: RootState) => state.product.products);
+  const totalWeight = products.reduce((acc, product) => {
+    if (product.weight !== null) {
+      return acc + +product.weight;
+    }
+    return acc;
+  }, 0);
 
-  // Calculate the total products
+  
+
   const totalProducts = products.length;
-
-  // Calculate the total weights
-  const totalWeights = products.reduce((acc, product) => acc + product.weight, 0);
-
-  // Calculate the total inventory value
-  const totalInventoryValue = products.reduce((acc, product) => acc + product.price * product.quantity, 0);
+  const totalInventoryValue = products.reduce((acc, product) => {
+    if (product.weight !== null) {
+      return acc + (product.price || 0) * (product.quantity || 0);
+    }
+    return acc;
+  }, 0);
 
   return (
-    <div  className='home'>
-     
-
-      <Card className='card'>
+    <div className="home">
+      <Card className="card">
         <Card.Body>
           <Card.Title>Total Products</Card.Title>
           <Card.Text>{totalProducts}</Card.Text>
@@ -28,7 +34,7 @@ const Home = () => {
       <Card>
         <Card.Body>
           <Card.Title>Total Weights</Card.Title>
-          <Card.Text>{totalWeights} kg</Card.Text>
+          <Card.Text>{totalWeight} kg</Card.Text>
         </Card.Body>
       </Card>
 
