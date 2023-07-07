@@ -1,12 +1,37 @@
-.home{
+.home {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     padding: 20px;
-    .card{
-    width: 17rem;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .card {
+    width: 16rem;
     height: 10rem;
     border-radius: 13px 70px;
     background-color: rgba(209, 143, 143, 0.388);
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 767px) {
+    .card {
+      width: 100%; /* Full width on mobile devices */
     }
-}
+  }
+  
+  @media (min-width: 768px) and (max-width: 991px) {
+    .home {
+      justify-content: center; /* Center align the card */
+      width: 100%;
+      max-width: 763px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+    .card {
+      width: 100%; /* Full width on tablet devices */
+    }
+  }
+  

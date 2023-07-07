@@ -15,12 +15,12 @@ import { Badge } from "react-bootstrap";
 import ConfirmStatus from "../modals/ConfirmStatus";
 import useStatus from "../hooks/useStatus";
 import ViewProduct from "../modals/ViewProduct";
-import { Pagination } from 'react-bootstrap';
+import { Pagination } from "react-bootstrap";
 
 interface TableProductProps {
   searchQuery: string;
 }
-const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
+const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   const products = useSelector((state: RootState) => state.product.products);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -33,15 +33,15 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
     const query = searchQuery.toLowerCase();
     return productName.includes(query);
   });
-  
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3; // Number of items to display per page
+  const itemsPerPage = 5; // Number of items to display per page
 
   // Calculate total number of pages
   const totalPages = Math.ceil(products.length / itemsPerPage);
 
   // Function to handle page change
-  const handlePageChange = (pageNumber:any) => {
+  const handlePageChange = (pageNumber: any) => {
     setCurrentPage(pageNumber);
   };
 
@@ -49,26 +49,22 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const displayedProducts = filteredProducts.slice(startIndex, endIndex);
- 
 
-
-
-  const handleOpenView = (product:any) => {
+  const handleOpenView = (product: any) => {
     setShowView(true);
     setSelectedProduct(product);
-    
   };
 
   const handleCloseView = () => {
     setShowView(false);
     setSelectedProduct(undefined);
   };
- 
- 
+
   const handleShow = () => setShow(true);
   const handleclose = () => setShow(false);
+
   useEffect(() => {
-    dispatch(loadProducts());
+    dispatch(loadProducts(products));
   }, [dispatch]);
 
   const handleRemoveProduct = async (productId: number): Promise<void> => {
@@ -129,7 +125,6 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
     handleShow();
   };
 
- 
   return (
     <>
       {products.length > 0 ? (
@@ -138,7 +133,7 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
             <tbody>
               <tr>
                 <th>SKU</th>
-                <th>Product Name</th>
+                <th>Name</th>
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Price</th>
@@ -146,24 +141,31 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
-              {displayedProducts.map((p,index) => (
+              {displayedProducts.map((p, index) => (
                 <tr key={`${p.id}-${index}`}>
                   <td data-th="SKU">{p.sku}</td>
-                  <td data-th="Product Name">{p.name}</td>
+                  <td data-th="Name">{p.name.length > 30 ? (
+                      <span title={p.name}>{p.name.substring(0, 10)}...</span>
+                    ) : (
+                      p.name
+                    )}</td>
                   <td data-th="Brand">{p.brand}</td>
                   <td data-th="Model">{p.model}</td>
                   <td data-th="Price">{p.price}</td>
                   <td data-th="Weight">{p.weight}</td>
                   <td data-th="Status">
-                    <Badge bg={p.status === "active" ? "success" : "danger"} className="fixed-badge-width">
+                    <Badge
+                      bg={p.status === "active" ? "success" : "danger"}
+                      className="fixed-badge-width"
+                    >
                       {p.status}
                     </Badge>
                   </td>
 
                   <td data-th="Actions">
                     <div
-                      className={`dropdown dropdown-container ${
-                        products.length < 2 ? "single-row" : ""
+                      className={`dropdown  ${
+                        products.length < 2 ? "dropdown-container" : ""
                       }`}
                     >
                       <Link
@@ -173,24 +175,18 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        {/* <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          className="bi bi-three-dots-vertical"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
-                        </svg> */}
-                        <i className="fa fa-angle-down"></i>
+                        <i className="fa fa-angle-down" ></i>
                       </Link>
                       <ul
                         className="dropdown-menu dropdown-menu-dark text-small shadow"
                         aria-labelledby="dropdownUser1"
                       >
                         <li>
-                          <Link className="dropdown-item" to="#" onClick={() => handleOpenView(p)}>
+                          <Link
+                            className="dropdown-item"
+                            to="#"
+                            onClick={() => handleOpenView(p)}
+                          >
                             View
                           </Link>
                         </li>
@@ -239,12 +235,15 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
                   disabled={loadingStatus}
                 />
               )}
-              {showView  && selectedProduct !== undefined && (
-                <ViewProduct show={showView} close={handleCloseView} product={selectedProduct}/>
+              {showView && selectedProduct !== undefined && (
+                <ViewProduct
+                  show={showView}
+                  close={handleCloseView}
+                  product={selectedProduct}
+                />
               )}
             </tbody>
           </table>
-          
         </div>
       ) : (
         <div className="no-product">
@@ -252,31 +251,30 @@ const TableProduct: React.FC<TableProductProps> =({searchQuery}) =>{
         </div>
       )}
 
-{products.length > 0  && (
-<Pagination className="pagination">
-<Pagination.Prev
-  onClick={() => handlePageChange(currentPage - 1)}
-  disabled={currentPage === 1}
- />
-{Array.from({ length: totalPages }, (_, index) => (
-  <Pagination.Item
-    key={index + 1}
-    active={currentPage === index + 1}
-    onClick={() => handlePageChange(index + 1)}
-    className={currentPage === index + 1 ? "active" : ""}
-   >
-    {index + 1}
-  </Pagination.Item>
-))}
-<Pagination.Next
-  onClick={() => handlePageChange(currentPage + 1)}
-  disabled={currentPage === totalPages}
-/>
-</Pagination>
-)}
-      
+      {products.length > 0 && (
+        <Pagination className="pagination">
+          <Pagination.Prev
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+          {Array.from({ length: totalPages }, (_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={currentPage === index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              className={currentPage === index + 1 ? "active" : ""}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
+      )}
     </>
   );
-}
+};
 
 export default TableProduct;

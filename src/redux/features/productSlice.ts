@@ -22,20 +22,29 @@ export interface Product {
 
 interface ProductState {
   products: Product[];
+  totalWeight: number;
+  totalProducts: number;
+  totalInventoryValue: number;
 }
 
 const initialState: ProductState = {
   products: [],
+  totalWeight: 0,
+  totalProducts: 0,
+  totalInventoryValue: 0,
 };
 
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    loadProducts: (state) => {
+    loadProducts: (state, action: PayloadAction<Product[]>) => {
       const serializedState = localStorage.getItem("products");
       if (serializedState) {
         state.products = JSON.parse(serializedState);
+        state.totalWeight = calculateTotalWeight(action.payload);
+      state.totalProducts = action.payload.length;
+      state.totalInventoryValue = calculateTotalInventoryValue(action.payload);
       }
     },
     addProduct: (state, action: PayloadAction<Product>) => {
@@ -63,10 +72,28 @@ const productSlice = createSlice({
     },
   },
 });
+const calculateTotalWeight = (products: Product[]): number => {
+  return products.reduce((acc, product) => {
+    if (product.weight !== null) {
+      return acc + +product.weight;
+    }
+    return acc;
+  }, 0);
+};
 
+const calculateTotalInventoryValue = (products: Product[]): number => {
+  return products.reduce((acc, product) => {
+    if (product.weight !== null) {
+      return acc + (product.price || 0) * (product.quantity || 0);
+    }
+    return acc;
+  }, 0);
+};
 export const { addProduct, removeProduct, updateProduct, loadProducts } =
   productSlice.actions;
+
 export default productSlice.reducer;
+
 const saveState = (products: Product[]) => {
   try {
     const serializedState = JSON.stringify(products);

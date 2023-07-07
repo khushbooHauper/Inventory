@@ -3,13 +3,17 @@
     h5{
         font-size: 14px;
     }
-    width: 55rem;
+    // width: 55rem;
     border-radius: 14px;
     margin: 30px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     
+    @media (max-width:991px) {
+        flex-direction:column;
+        justify-content:center;
+    }
     .left-boxes{
        
         .box-1{
