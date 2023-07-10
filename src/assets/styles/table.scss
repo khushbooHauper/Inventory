@@ -6,9 +6,11 @@
 
 .rwd-table {
   margin: auto;
-  min-width: 300px;
-  max-width: 100%;
+  // min-width: 300px;
+  // max-width: 100%;
+  width: 100%; /* Set the width of the table */
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .rwd-table tr:first-child {
@@ -33,6 +35,14 @@
 
 .rwd-table td {
   display: block;
+  height: 50px; /* Set the desired fixed height for table rows */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rwd-table td:nth-child(6) {
+  white-space: normal; /* Remove nowrap for the 6th column */
+  text-overflow: clip; /* Disable ellipsis for the 6th column */
 }
 
 .rwd-table td:first-child {
@@ -177,32 +187,27 @@ h3:after {
 
 .rwd-table {
   margin: auto;
-  min-width: 300px;
-  max-width: 100%;
+  // min-width: 300px;
+  // max-width: 100%;
+  width: 100%; /* Set the width of the table */
   border-collapse: collapse;
+  table-layout: fixed;
+
   .dropdown-container {
-    position: absolute;
-    z-index: 9999;
-    
-   
+    position: static;
   }
+
   .cursor {
     cursor: pointer;
   }
   .fixed-badge-width {
-    width: 80px; /* Set the desired width */
-  }
-  @media (max-width: 991px) {
-    .dropdown-container {
-      position: static;
-     
-    }
+    width: 70px; /* Set the desired width */
   }
 }
 
 .rwd-table tr:first-child {
   border-top: none;
-  background: #b87b76a4;
+  background: rgb(180 180 180 / 64%);
   color: #fff;
 }
 
@@ -222,6 +227,14 @@ h3:after {
 
 .rwd-table td {
   display: block;
+  height: 50px; /* Set the desired fixed height for table rows */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rwd-table td:nth-child(6) {
+  white-space: normal; /* Remove nowrap for the 6th column */
+  text-overflow: clip; /* Disable ellipsis for the 6th column */
 }
 
 .rwd-table td:first-child {
@@ -289,7 +302,7 @@ h3:after {
   }
   .rwd-table th,
   .rwd-table td {
-    padding: 20px !important;
+    padding: 18px 27px !important;
   }
 }
 
@@ -324,15 +337,15 @@ h3:before {
   content: "\25C0";
   position: absolute;
   left: -50px;
-  -webkit-animation: leftRight 2s linear infinite;
-  animation: leftRight 2s linear infinite;
+  -webkit-animation: "leftRight" 2s linear infinite;
+  animation: "leftRight" 2s linear infinite;
 }
 h3:after {
   content: "\25b6";
   position: absolute;
   right: -50px;
-  -webkit-animation: leftRight 2s linear infinite reverse;
-  animation: leftRight 2s linear infinite reverse;
+  -webkit-animation: "leftRight" 2s linear infinite reverse;
+  animation: "leftRight" 2s linear infinite reverse;
 }
 @-webkit-keyframes leftRight {
   0% {
@@ -383,4 +396,11 @@ h3:after {
 .no-product {
   text-align: center;
   margin-top: 100px;
+}
+@media (max-width: 991px) {
+  .actions {
+    .dropdown-container {
+      position: static;
+    }
+  }
 }

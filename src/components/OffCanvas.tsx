@@ -13,7 +13,7 @@ function OffCanvas() {
   const expand = false; // Set the desired expand value
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [userName, setUserName] = useState<string>("");
-  const { isLoggedIn,logout } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,8 +56,8 @@ function OffCanvas() {
                 Inventory
               </Offcanvas.Title>
             </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="justify-content-end flex-grow-1 pe-3">
+            <Offcanvas.Body className="d-flex justify-space-between flex-column">
+              <Nav className="justify-content-start flex-grow-1 pe-3">
                 <Nav.Link
                   as={Link}
                   to="/"
@@ -92,21 +92,53 @@ function OffCanvas() {
                     Product List
                   </NavDropdown.Item>
                 </NavDropdown>
-                
               </Nav>
               <div className="dropdown">
-      <Link to="#" className="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="" width="32" height="32" className="rounded-circle me-2"/>
-        <strong>{userName}</strong>
-      </Link>
-      <ul className="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-        <li><Link className="dropdown-item"to="#">New project...</Link></li>
-        <li><Link className="dropdown-item" to="#">Settings</Link></li>
-        <li><Link className="dropdown-item" to="#">Profile</Link></li>
-        <li><hr className="dropdown-divider"/></li>
-        <li><Link className="dropdown-item" to='/' onClick={logout}>Sign out</Link></li>
-      </ul>
-    </div>
+                <Link
+                  to="#"
+                  className="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                  id="dropdownUser1"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="https://github.com/mdo.png"
+                    alt=""
+                    width="32"
+                    height="32"
+                    className="rounded-circle me-2"
+                  />
+                  <strong>{userName}</strong>
+                </Link>
+                <ul
+                  className="dropdown-menu dropdown-menu-dark text-small shadow"
+                  aria-labelledby="dropdownUser1"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="#">
+                      New project...
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="#">
+                      Settings
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="#">
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/" onClick={logout}>
+                      Sign out
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </Offcanvas.Body>
           </Navbar.Offcanvas>
         </Container>

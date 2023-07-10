@@ -81,12 +81,12 @@ const AddProduct = () => {
       }
     } else {
       // Performing add operation
-      const newId = products.length + 1;
+      const highestId = Math.max(...products.map((product) => product.id));
+      const newId = highestId + 1;
       dispatch(
         addProduct({
           id: newId,
           ...values,
-          
         })
       );
     }
@@ -148,303 +148,309 @@ const AddProduct = () => {
   return (
     <div>
       <div className="addProduct">
-      <div className="left-boxes">
-        <div className="box-1">
-          <h5>Description</h5>
-          <div className="box-1-first">
-            <div>
-            <input
-            placeholder="product name"
-            type="text"
-            className="input"
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <div>
-          {formik.touched.name && formik.errors.name && (
-            <div className="error-message">{formik.errors.name}</div>
-          )}
-          </div>
-            </div>
-          
-          <div>
-           
-            <input
-            placeholder="product brand"
-            type="text"
-            className="input"
-            name="brand"
-            value={formik.values.brand}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-            
-            <div>
-            {formik.touched.brand && formik.errors.brand && (
-            <div className="error-message">{formik.errors.brand}</div>
-          )}
-            </div>
-          </div>
-          
-         
-          </div>
-          <div className="box-1-second">
-            <div>
-            <input
-            placeholder="product model"
-            type="text"
-            className="input"
-            name="model"
-            value={formik.values.model}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <div>
-          {formik.touched.model && formik.errors.model && (
-            <div className="error-message">{formik.errors.model}</div>
-          )}
-          </div>
-            </div>
-         
-         <div>
-         <input
-            placeholder="model number"
-            type="text"
-            className="input"
-            name="modelNumber"
-            value={formik.values.modelNumber === null ? "" : formik.values.modelNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          <div>
-          {formik.touched.modelNumber && formik.errors.modelNumber && (
-            <div className="error-message">{formik.errors.modelNumber}</div>
-          )}
-          </div>
-         </div>
-          
-         
-          </div>
-          <div  className="box-1-third">
-          
-          <textarea
-            rows={4 as number}
-            cols={40 as number}
-            placeholder="product description"
-            className="disable-resize"
-            name="des"
-            value={formik.values.des}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          ></textarea>
-          {formik.touched.des && formik.errors.des && (
-            <div className="error-message">{formik.errors.des}</div>
-          )}
-          </div>
-           
-        </div>
-        <div className="box-2">
-          <h5>Category</h5>
-          <div className="box-2b">
-            <div >
-              <input
-                placeholder="product category"
-                className="input"
-                name="category"
-                value={formik.values.category}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.category && formik.errors.category && (
-                <div className="error-message">{formik.errors.category}</div>
-              )}
-            </div>
-            <div>
-              <input
-                placeholder="product subcategory"
-                className="input"
-                name="subcategory"
-                value={formik.values.subcategory}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.subcategory && formik.errors.subcategory && (
-                <div className="error-message">{formik.errors.subcategory}</div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="box-3">
-          <h5>Inventory</h5>
-          <div className="box-3b">
-            <div>
-              <input
-                placeholder="Quantity"
-                className="input"
-                type="text"
-                name="quantity"
-                value={formik.values.quantity === null ? "" : formik.values.quantity}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.quantity && formik.errors.quantity && (
-                <div className="error-message">{formik.errors.quantity}</div>
-              )}
-            </div>
-            <div>
-              <input
-                placeholder="SKU"
-                className="input"
-                name="sku"
-                value={formik.values.sku}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.sku && formik.errors.sku && (
-                <div className="error-message">{formik.errors.sku}</div>
-              )}
-            </div>
-          </div>
-        </div>
-        
-      </div>
-      <div className="right-boxes">
-        <div className="box-5">
-          <h5>Product Images</h5>
-          <div>
-            <label
-              htmlFor="file-input"
-              className="custom-file-upload"
-              onClick={handleLabelClick}
-            >
-              Select Images
-            </label>
-
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={(event) => {
-                handleImageChange(event, formik);
-                formik.setFieldValue(
-                  "selectedImages",
-                  Array.from(event.currentTarget.files || [])
-                );
-              }}
-              ref={fileInputRef}
-              className="hidden"
-              name="selectedImages"
-              onBlur={formik.handleBlur}
-            />
-
-            {formik.errors.selectedImages && (
-              <div className="error-message">
-                {formik.errors.selectedImages}
+        <div className="left-boxes">
+          <div className="box-1">
+            <h5>Description</h5>
+            <div className="box-1-first">
+              <div>
+                <input
+                  placeholder="product name"
+                  type="text"
+                  className="input"
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <div>
+                  {formik.touched.name && formik.errors.name && (
+                    <div className="error-message">{formik.errors.name}</div>
+                  )}
+                </div>
               </div>
-            )}
 
-            {formik.values.selectedImages.length > 0 && (
-              <div className="uploaded-images">
-                {formik.values.selectedImages.map(
-                  (image: any, index: number) => (
-                    <div key={index}>
-                      <p>{image.name}</p>
-                      <img alt="Product" src={image} />
-                      <br />
-                      {/* <button onClick={() => removeImage(index)}>Remove</button> */}
+              <div>
+                <input
+                  placeholder="product brand"
+                  type="text"
+                  className="input"
+                  name="brand"
+                  value={formik.values.brand}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+
+                <div>
+                  {formik.touched.brand && formik.errors.brand && (
+                    <div className="error-message">{formik.errors.brand}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="box-1-second">
+              <div>
+                <input
+                  placeholder="product model"
+                  type="text"
+                  className="input"
+                  name="model"
+                  value={formik.values.model}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <div>
+                  {formik.touched.model && formik.errors.model && (
+                    <div className="error-message">{formik.errors.model}</div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <input
+                  placeholder="model number"
+                  type="text"
+                  className="input"
+                  name="modelNumber"
+                  value={
+                    formik.values.modelNumber === null
+                      ? ""
+                      : formik.values.modelNumber
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                <div>
+                  {formik.touched.modelNumber && formik.errors.modelNumber && (
+                    <div className="error-message">
+                      {formik.errors.modelNumber}
                     </div>
-                  )
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="box-1-third">
+              <textarea
+                rows={4 as number}
+                cols={40 as number}
+                placeholder="product description"
+                className="disable-resize"
+                name="des"
+                value={formik.values.des}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              ></textarea>
+              {formik.touched.des && formik.errors.des && (
+                <div className="error-message">{formik.errors.des}</div>
+              )}
+            </div>
+          </div>
+          <div className="box-2">
+            <h5>Category</h5>
+            <div className="box-2b">
+              <div>
+                <input
+                  placeholder="product category"
+                  className="input"
+                  name="category"
+                  value={formik.values.category}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.category && formik.errors.category && (
+                  <div className="error-message">{formik.errors.category}</div>
                 )}
               </div>
-            )}
+              <div>
+                <input
+                  placeholder="product subcategory"
+                  className="input"
+                  name="subcategory"
+                  value={formik.values.subcategory}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.subcategory && formik.errors.subcategory && (
+                  <div className="error-message">
+                    {formik.errors.subcategory}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="box-3">
+            <h5>Inventory</h5>
+            <div className="box-3b">
+              <div>
+                <input
+                  placeholder="Quantity"
+                  className="input"
+                  type="text"
+                  name="quantity"
+                  value={
+                    formik.values.quantity === null
+                      ? ""
+                      : formik.values.quantity
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.quantity && formik.errors.quantity && (
+                  <div className="error-message">{formik.errors.quantity}</div>
+                )}
+              </div>
+              <div>
+                <input
+                  placeholder="SKU"
+                  className="input"
+                  name="sku"
+                  value={formik.values.sku}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.sku && formik.errors.sku && (
+                  <div className="error-message">{formik.errors.sku}</div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="box-6">
-          <h5>Shipping and Delivery(In Kg)</h5>
-          <div  className="box-6-inside">
-          <div>
-          <input
-              placeholder="Item weight"
-              className="weight"
-              name="weight"
-              value={formik.values.weight === null ? "" : formik.values.weight}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-         
-          {formik.touched.weight && formik.errors.weight && (
-            <div className="error-message">{formik.errors.weight}</div>
-          )}
-          </div>
-          <div>
-          <input
-            placeholder="status"
-            className="input"
-            name="status"
-            value={formik.values.status}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.status && formik.errors.status && (
-            <div className="error-message">{formik.errors.status}</div>
-          )}
-          </div>
-          </div>
-          <div className="box-6-inside">
-          <div>
+        <div className="right-boxes">
+          <div className="box-5">
+            <h5>Product Images</h5>
+            <div>
+              <label
+                htmlFor="file-input"
+                className="custom-file-upload"
+                onClick={handleLabelClick}
+              >
+                Select Images
+              </label>
 
-          <input
-          placeholder="dimensions"
-          className="input"
-          name="dimensions"
-          value={formik.values.dimensions}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          />
-         
-          {formik.touched.dimensions && formik.errors.dimensions && (
-          <div className="error-message">{formik.errors.dimensions}</div>
-          )}
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(event) => {
+                  handleImageChange(event, formik);
+                  formik.setFieldValue(
+                    "selectedImages",
+                    Array.from(event.currentTarget.files || [])
+                  );
+                }}
+                ref={fileInputRef}
+                className="hidden"
+                name="selectedImages"
+                onBlur={formik.handleBlur}
+              />
+
+              {formik.errors.selectedImages && (
+                <div className="error-message">
+                  {formik.errors.selectedImages}
+                </div>
+              )}
+
+              {formik.values.selectedImages.length > 0 && (
+                <div className="uploaded-images">
+                  {formik.values.selectedImages.map(
+                    (image: any, index: number) => (
+                      <div key={index}>
+                        <p>{image.name}</p>
+                        <img alt="Product" src={image} />
+                        <br />
+                        {/* <button onClick={() => removeImage(index)}>Remove</button> */}
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-          <div>
-          <input
-          placeholder="manufacturer"
-          className="input"
-          name="manufacturer"
-          value={formik.values.manufacturer}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          />
-          {formik.touched.manufacturer && formik.errors.manufacturer && (
-          <div className="error-message">{formik.errors.manufacturer}</div>
-          )}
+          <div className="box-6">
+            <h5>Shipping and Delivery(In Kg)</h5>
+            <div className="box-6-inside">
+              <div>
+                <input
+                  placeholder="Item weight"
+                  className="weight"
+                  name="weight"
+                  value={
+                    formik.values.weight === null ? "" : formik.values.weight
+                  }
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+
+                {formik.touched.weight && formik.errors.weight && (
+                  <div className="error-message">{formik.errors.weight}</div>
+                )}
+              </div>
+              <div>
+                <input
+                  placeholder="status"
+                  className="input"
+                  name="status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.status && formik.errors.status && (
+                  <div className="error-message">{formik.errors.status}</div>
+                )}
+              </div>
+            </div>
+            <div className="box-6-inside">
+              <div>
+                <input
+                  placeholder="dimensions"
+                  className="input"
+                  name="dimensions"
+                  value={formik.values.dimensions}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+
+                {formik.touched.dimensions && formik.errors.dimensions && (
+                  <div className="error-message">
+                    {formik.errors.dimensions}
+                  </div>
+                )}
+              </div>
+              <div>
+                <input
+                  placeholder="manufacturer"
+                  className="input"
+                  name="manufacturer"
+                  value={formik.values.manufacturer}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.manufacturer && formik.errors.manufacturer && (
+                  <div className="error-message">
+                    {formik.errors.manufacturer}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="box-6-third">
+              <input
+                placeholder="Price"
+                className="price"
+                name="price"
+                value={formik.values.price === null ? "" : formik.values.price}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+
+              {formik.touched.price && formik.errors.price && (
+                <div className="error-message">{formik.errors.price}</div>
+              )}
+            </div>
           </div>
-          </div>
-           
-          <div className="box-6-third">
-          <input
-             placeholder="Price"
-             className="price"
-             name="price"
-             value={formik.values.price === null ? "" : formik.values.price}
-             onChange={formik.handleChange}
-             onBlur={formik.handleBlur}
-           />
-        
-         {formik.touched.price && formik.errors.price && (
-           <div className="error-message">{formik.errors.price}</div>
-         )}
-          </div>
-          
         </div>
-        
       </div>
-     
-      </div>
-     <div  className="add-btn">
-     <Button
+      <div className="add-btn">
+        <Button
           variant="dark"
           type="submit"
           onClick={handleFormSubmission}
@@ -456,8 +462,7 @@ const AddProduct = () => {
         >
           {id ? "Update Product" : "Add Product"}
         </Button>
-     </div>
-      
+      </div>
     </div>
   );
 };

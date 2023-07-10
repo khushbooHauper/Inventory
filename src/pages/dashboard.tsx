@@ -11,11 +11,8 @@ import OffCanvas from "../components/OffCanvas";
 function Dashboard() {
   const [isMobileView, setIsMobileView] = useState(false);
   const [isTabletView, setIsTabletView] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const handleClick = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+ 
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,13 +38,13 @@ function Dashboard() {
               <OffCanvas />
             </Col>
           ) : (
-            <Col sm={3} xs={3}>
+            <Col sm={2} xs={2}>
               <Sidebar />
             </Col>
           )}
           <Col
-            sm={isMobileView || isTabletView ? 12 : 9}
-            xs={isMobileView || isTabletView ? 12 : 9}
+            sm={isMobileView || isTabletView ? 12 : 10}
+            xs={isMobileView || isTabletView ? 12 : 10}
           >
             <Routes>
               <Route path="/" element={<Home />} />

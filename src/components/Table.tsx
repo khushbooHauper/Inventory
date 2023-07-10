@@ -27,6 +27,11 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   const [showView, setShowView] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(undefined);
 
+  // Reset currentPage when searchQuery changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
   // Filter the products based on the search query
   const filteredProducts = products.filter((product) => {
     const productName = product.name.toLowerCase();
@@ -35,7 +40,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Number of items to display per page
+  const itemsPerPage = 4; // Number of items to display per page
 
   // Calculate total number of pages
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -61,7 +66,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   };
 
   const handleShow = () => setShow(true);
-  const handleclose = () => setShow(false);
+  // const handleclose = () => setShow(false);
 
   useEffect(() => {
     dispatch(loadProducts(products));
@@ -91,6 +96,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   const onDelete = (id: number) => {
     deleteById(id);
     handleShow();
+    setCurrentPage(1);
   };
 
   const toggleStatus = (itemId: number) => {
@@ -112,12 +118,9 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
     statusFinally,
     showConfirmationStatus,
     handleCancelStatus,
-    resultStatus,
     idToStatus,
     loadingStatus,
-    errorStatus,
-    isSuccessStatus,
-    setResultStatus,
+   
   } = useStatus(toggleStatus, true);
 
   const handleStatus = (id: number) => {
@@ -135,7 +138,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                 <th>SKU</th>
                 <th>Name</th>
                 <th>Brand</th>
-                <th>Model</th>
+                {/* <th>Model</th> */}
                 <th>Price</th>
                 <th>Weight</th>
                 <th>Status</th>
@@ -144,13 +147,15 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
               {displayedProducts.map((p, index) => (
                 <tr key={`${p.id}-${index}`}>
                   <td data-th="SKU">{p.sku}</td>
-                  <td data-th="Name">{p.name.length > 30 ? (
+                  <td data-th="Name">
+                    {p.name.length > 30 ? (
                       <span title={p.name}>{p.name.substring(0, 10)}...</span>
                     ) : (
                       p.name
-                    )}</td>
+                    )}
+                  </td>
                   <td data-th="Brand">{p.brand}</td>
-                  <td data-th="Model">{p.model}</td>
+                  {/* <td data-th="Model">{p.model}</td> */}
                   <td data-th="Price">{p.price}</td>
                   <td data-th="Weight">{p.weight}</td>
                   <td data-th="Status">
@@ -162,11 +167,11 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                     </Badge>
                   </td>
 
-                  <td data-th="Actions">
+                  <td data-th="Actions" className="actions">
                     <div
-                      className={`dropdown  ${
-                        products.length < 2 ? "dropdown-container" : ""
+                      className={`dropdown dropdown-container 
                       }`}
+                      
                     >
                       <Link
                         to="#"
@@ -175,17 +180,19 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                        <i className="fa fa-angle-down" ></i>
+                       <span>Actions</span> {" "}<i className="fa fa-angle-down"></i>
                       </Link>
                       <ul
                         className="dropdown-menu dropdown-menu-dark text-small shadow"
                         aria-labelledby="dropdownUser1"
+                       
                       >
                         <li>
                           <Link
                             className="dropdown-item"
                             to="#"
                             onClick={() => handleOpenView(p)}
+                            
                           >
                             View
                           </Link>

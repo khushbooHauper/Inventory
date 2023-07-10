@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Modal, Badge } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from "react";
+import { Modal, Badge } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
-import '../assets/styles/viewproduct.scss';
+import "../assets/styles/viewproduct.scss";
 
 interface ViewProductProps {
   show: boolean;
@@ -13,6 +13,11 @@ interface ViewProductProps {
 
 const ViewProduct: React.FC<ViewProductProps> = ({ show, close, product }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
 
   const handleImageSelect = (index: number) => {
     setSelectedImageIndex(index);
@@ -30,14 +35,17 @@ const ViewProduct: React.FC<ViewProductProps> = ({ show, close, product }) => {
               <img
                 src={product.selectedImages[selectedImageIndex]}
                 alt={`Images ${selectedImageIndex}`}
-                style={{width:'500px',height:'300px'}}
+                className="main-image"
+                
               />
             </div>
             <div className="img-select">
               {product.selectedImages.map((image: string, index: number) => (
                 <div
                   key={index}
-                  className={`img-item ${index === selectedImageIndex ? 'active' : ''}`}
+                  className={`img-item ${
+                    index === selectedImageIndex ? "active" : ""
+                  }`}
                   onClick={() => handleImageSelect(index)}
                 >
                   <img src={image} alt={`Images ${index}`} />
@@ -46,21 +54,63 @@ const ViewProduct: React.FC<ViewProductProps> = ({ show, close, product }) => {
             </div>
           </div>
           <div className="product-info">
-            <p>Price: INR {product.price}</p>
-            <p>Weight: {product.weight} Kg</p>
             <p>
-              Status:{' '}
-              <Badge bg={product.status === 'active' ? 'success' : 'danger'}>
+              <strong>Price:</strong> INR {product.price}
+            </p>
+            <p>
+              <strong>Weight:</strong> {product.weight} Kg
+            </p>
+            <p>
+              <strong> Status:</strong>{" "}
+              <Badge bg={product.status === "active" ? "success" : "danger"}>
                 {product.status}
               </Badge>
             </p>
-            <p>Description: {product.des}</p>
-            {/* Add other product details as needed */}
+            <div
+              className={`description ${showFullDescription ? "expanded" : ""}`}
+            >
+              <p>
+                <strong>Description:</strong>{" "}
+                {showFullDescription
+                  ? product.des
+                  : `${product.des.substring(0, 100)}...`}
+              </p>
+              <Link onClick={toggleDescription} to="#">
+                {showFullDescription ? "Read Less" : "Read More"}
+              </Link>
+            </div>
+
+            <p>
+              <strong>Brand:</strong> {product.brand}
+            </p>
+            <p>
+              <strong>Model:</strong> {product.model}
+            </p>
+            <p>
+              <strong>Model Number:</strong> {product.modelNumber}
+            </p>
+            <p>
+              <strong>Category:</strong> {product.category}
+            </p>
+            <p>
+              <strong>Sub-Category:</strong> {product.subcategory}
+            </p>
+            <p>
+              <strong>Quantity:</strong> {product.quantity}
+            </p>
+            <p>
+              <strong>Dimensions:</strong> {product.dimensions}
+            </p>
+            <p>
+              <strong>Manufacturere:</strong> {product.manufacturer}
+            </p>
           </div>
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={close}>Close</Button>
+        <Button onClick={close} variant="dark">
+          Close
+        </Button>
       </Modal.Footer>
     </Modal>
   );

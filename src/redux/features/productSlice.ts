@@ -42,9 +42,10 @@ const productSlice = createSlice({
       const serializedState = localStorage.getItem("products");
       if (serializedState) {
         state.products = JSON.parse(serializedState);
-        state.totalWeight = calculateTotalWeight(action.payload);
-      state.totalProducts = action.payload.length;
-      state.totalInventoryValue = calculateTotalInventoryValue(action.payload);
+        state.totalWeight = calculateTotalWeight( state.products);
+      state.totalProducts = state.products.length;
+      state.totalInventoryValue = calculateTotalInventoryValue( state.products);
+      saveState(state.products);
       }
     },
     addProduct: (state, action: PayloadAction<Product>) => {
