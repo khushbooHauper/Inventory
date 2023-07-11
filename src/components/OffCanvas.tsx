@@ -29,6 +29,7 @@ function OffCanvas() {
 
     fetchData();
   }, [isLoggedIn]);
+  
   const handleNavItemClick = () => {
     setShowOffcanvas(false);
   };
@@ -71,7 +72,7 @@ function OffCanvas() {
                   title={
                     <>
                       <i className="fa fa-shopping-bag" aria-hidden="true"></i>{" "}
-                      Products
+                      <Link to='/products' style={{textDecoration:'none',color:'black'}}>Products</Link>
                     </>
                   }
                   id="offcanvasNavbarDropdown"

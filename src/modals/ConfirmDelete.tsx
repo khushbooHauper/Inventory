@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { Modal,Button} from 'react-bootstrap';
+import { ConfirmProps } from '../types/confirmDelete';
 
-interface ConfirmProps {
-    onClick: () => Promise<void>;
-  handleCancel: () => void;
-  show: boolean;
-  disabled: boolean;
-}
+
 
 const Confirm: React.FC<ConfirmProps> = ({ onClick, handleCancel, show, disabled }) => {
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(disabled);

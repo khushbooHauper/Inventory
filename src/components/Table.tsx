@@ -16,10 +16,9 @@ import ConfirmStatus from "../modals/ConfirmStatus";
 import useStatus from "../hooks/useStatus";
 import ViewProduct from "../modals/ViewProduct";
 import { Pagination } from "react-bootstrap";
+import { TableProductProps } from "../types/table";
 
-interface TableProductProps {
-  searchQuery: string;
-}
+
 const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   const products = useSelector((state: RootState) => state.product.products);
   const dispatch = useDispatch();
@@ -76,6 +75,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
 
   const handleRemoveProduct = async (productId: number): Promise<void> => {
     dispatch(removeProduct(productId));
+    dispatch(loadProducts(products));
   };
 
   const AfterDelete = (isSuccess: boolean, resultDelete: any) => {
@@ -137,29 +137,38 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
           <table className="rwd-table">
             <tbody>
               <tr>
-                <th>SKU</th>
+                <th>Image</th>
                 <th>Name</th>
-                <th>Brand</th>
-                <th>Model</th>
+                <th>Category</th>
+                <th>SubCategory</th>
                 <th>Price</th>
-                <th>Weight</th>
                 <th>Status</th>
+                <th>CreatedAt</th>
                 <th>Actions</th>
               </tr>
               {displayedProducts.map((p, index) => (
                 <tr key={`${p.id}-${index}`}>
-                  <td data-th="SKU">{p.sku}</td>
+                 
+                 <td data-th="Image">
+                  {p.selectedImages[0] && typeof p.selectedImages[0] === 'string' && (
+                    <img
+                      src={p.selectedImages[0]}
+                      alt="Product Images"
+                      className="image-table-preview"
+                      
+                    />
+                  )}
+                </td>
                   <td data-th="Name">
                     {p.name.length > 30 ? (
-                      <span title={p.name}>{p.name.substring(0, 10)}...</span>
+                      <span title={p.name}>{p.name.substring(0, 10)}</span>
                     ) : (
                       p.name
                     )}
                   </td>
-                  <td data-th="Brand">{p.brand}</td>
-                  <td data-th="Model">{p.model}</td>
+                  <td data-th="Category">{p.category.slice(0,10)}</td>
+                  <td data-th="SubCategory">{p.subcategory.slice(0,10)}</td>
                   <td data-th="Price">{p.price}</td>
-                  <td data-th="Weight">{p.weight}</td>
                   <td data-th="Status">
                     <Badge
                       bg={p.status === "active" ? "success" : "danger"}
@@ -168,7 +177,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                       {p.status}
                     </Badge>
                   </td>
-
+                  <td data-th="CreatedAt">{p.createdAt.slice(0,10)}</td>
                   <td data-th="Actions" className="actions">
                     <div
                       className={`dropdown dropdown-container 

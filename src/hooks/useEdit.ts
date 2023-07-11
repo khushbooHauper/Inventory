@@ -1,13 +1,8 @@
 import { useState } from "react";
+import { UseEditProps } from "../types/useEdit";
 
 
-type EditFunction = (id: number, data: any) => Promise<any>;
-type HandleResponse = (isSuccess: boolean, result: any) => void;
 
-interface UseEditProps {
-  editFunction: EditFunction;
-  handleResponse: HandleResponse;
-}
 
 export const useEdit = ({ editFunction, handleResponse }: UseEditProps) => {
   const [showConfirmation, setShowConfirmation] = useState(false);

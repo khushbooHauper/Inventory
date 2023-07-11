@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import { ConfirmProps } from "../types/confirmStatus";
 
-interface ConfirmProps {
-    onClick: () => Promise<void>;
-  handleCancel: () => void;
-  show: boolean;
-  disabled: boolean;
-}
+
 
 const ConfirmStatus: React.FC<ConfirmProps> = ({ onClick, handleCancel, show, disabled }) => {
     const handleUpdate = () =>{

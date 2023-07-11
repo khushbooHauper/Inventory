@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Product, loadProducts } from "../redux/features/productSlice";
+import { loadProducts } from "../redux/features/productSlice";
 import { Chart, ChartConfiguration, registerables, ChartType } from "chart.js";
 import "../assets/styles/home.scss";
+import { Product } from "../types/product";
 
 Chart.register(...registerables);
 
@@ -20,6 +21,31 @@ const Home = () => {
     (state: RootState) => state.product.totalInventoryValue
   );
   const dispatch = useDispatch();
+
+  const formatInventoryValue = (value: number): string => {
+    if (value >= 1000000000) {
+      const billionValue = value / 1000000000;
+      return `${billionValue.toFixed(2)} billion`;
+    } else if (value >= 10000000) {
+      const croreValue = value / 10000000;
+      return `${croreValue.toFixed(2)} crore`;
+    } else if (value >= 100000) {
+      const lakhValue = value / 100000;
+      return `${lakhValue.toFixed(2)} lakh`;
+    } else if (value >= 1000) {
+      const thousandValue = value / 1000;
+      return `${thousandValue.toFixed(2)} thousand`;
+    } else {
+      return `${value.toFixed(2)}`;
+    }
+  };
+  
+  const formattedValue = formatInventoryValue(totalInventoryValue);
+
+
+
+
+
 
   useEffect(() => {
     // Dispatch an action to load the products if the state is not already populated
@@ -53,6 +79,34 @@ const Home = () => {
             {
               label: "Product Count",
               data: data,
+              backgroundColor: "rgba(75, 192, 192, 0.8)",
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0,
+              },
+            },
+          },
+        },
+      });
+    }else if (!totalProducts && chart1Ref.current) {
+      if (chart1Instance.current) {
+        chart1Instance.current.destroy();
+      }
+    
+      chart1Instance.current = new Chart(chart1Ref.current, {
+        type: "bar",
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: "Product Count",
+              data: [],
               backgroundColor: "rgba(75, 192, 192, 0.8)",
             },
           ],
@@ -108,6 +162,39 @@ const Home = () => {
           },
         },
       } as ChartConfiguration<"pie">);
+    } else if (!totalProducts && chart2Ref.current) {
+      if (chart2Instance.current) {
+        chart2Instance.current.destroy();
+      }
+    
+      chart2Instance.current = new Chart(chart2Ref.current, {
+        type: "pie" as ChartType,
+        data: {
+          labels: ["No Products"],
+          datasets: [
+            {
+              label: "Quantity Sold",
+              data: [1],
+              backgroundColor: ["grey"], 
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: "right",
+            },
+          },
+          elements: {
+            arc: {
+              borderWidth: 1,
+              borderColor: "rgba(255, 255, 255, 0.8)",
+            },
+          },
+          
+        },
+      } as ChartConfiguration<"pie">);
     }
   }, [products, totalProducts]);
 
@@ -158,7 +245,7 @@ const Home = () => {
         <Card className="card">
           <Card.Body>
             <Card.Title>Total Inventory Value</Card.Title>
-            <Card.Text>INR {totalInventoryValue}</Card.Text>
+            <Card.Text>INR {formattedValue}</Card.Text>
           </Card.Body>
         </Card>
       </div>

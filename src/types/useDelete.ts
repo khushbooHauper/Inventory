@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 
 export type TDeleteFunction = (id: number) => Promise<void>;
 export type THandleResponseDelete = (isSuccess: boolean, data: any) => void;

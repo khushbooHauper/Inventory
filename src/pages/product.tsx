@@ -20,8 +20,10 @@ function Product() {
     setSearchQuery(query);
   };
 
-  // Debounce the search query with a delay of 300ms
+  // Debounce the search query with a delay of 2000ms
   const debouncedSearch = debounce((query: string) => {
+     // Perform the search logic here
+     console.log("Search query:", query);
    }, 1000);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React ,{useContext,useState,useEffect} from 'react'
 import { Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/styles/sidebar.scss";
 import axios from "axios";
 import { AuthContext } from '../context/AuthContext';
@@ -10,8 +10,13 @@ const Sidebar = () => {
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [userName, setUserName] = useState<string>("");
   const { isLoggedIn,logout } = useContext(AuthContext);
-
+ const navigate = useNavigate();
+ 
   const toggleSubmenu = () => {
+    if (!showSubmenu) {
+      // Navigate to '/products' when the submenu is initially closed
+      navigate('/products');
+    }
     setShowSubmenu(!showSubmenu);
   };
   useEffect(() => {
@@ -40,7 +45,7 @@ const Sidebar = () => {
         
         <Nav.Link
           as={Link}
-          to="#"
+          to="/products" 
           className="side-menu-link"
           onClick={toggleSubmenu}
         >

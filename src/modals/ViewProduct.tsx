@@ -4,12 +4,9 @@ import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 import "../assets/styles/viewproduct.scss";
+import { ViewProductProps } from "../types/viewProduct";
 
-interface ViewProductProps {
-  show: boolean;
-  close: () => void;
-  product: any;
-}
+
 
 const ViewProduct: React.FC<ViewProductProps> = ({ show, close, product }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -73,7 +70,7 @@ const ViewProduct: React.FC<ViewProductProps> = ({ show, close, product }) => {
                 <strong>Description:</strong>{" "}
                 {showFullDescription
                   ? product.des
-                  : `${product.des.substring(0, 100)}...`}
+                  : `${product.des.substring(0, 50)}...`}
               </p>
               <Link onClick={toggleDescription} to="#">
                 {showFullDescription ? "Read Less" : "Read More"}
@@ -103,6 +100,9 @@ const ViewProduct: React.FC<ViewProductProps> = ({ show, close, product }) => {
             </p>
             <p>
               <strong>Manufacturere:</strong> {product.manufacturer}
+            </p>
+            <p>
+              <strong>Created At:</strong> {product.createdAt}
             </p>
           </div>
         </div>

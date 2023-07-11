@@ -1,31 +1,9 @@
 // productSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import moment from "moment";
+import { Product, ProductState } from "../../types/product";
 
-export interface Product {
-  id: number;
-  name: string;
-  brand:  string;
-  model:string;
-  modelNumber:number | null;
-  sku: string;
-  des: string;
-  selectedImages:  File[] | string[];
-  category: string;
-  subcategory: string;
-  status: string;
-  price: number | null;
-  weight: number | null;
-  dimensions:string;
-  manufacturer:string;
-  quantity: number | null;
- }
 
-interface ProductState {
-  products: Product[];
-  totalWeight: number;
-  totalProducts: number;
-  totalInventoryValue: number;
-}
 
 const initialState: ProductState = {
   products: [],
@@ -49,7 +27,11 @@ const productSlice = createSlice({
       }
     },
     addProduct: (state, action: PayloadAction<Product>) => {
-      state.products.push(action.payload);
+      const newProduct = {
+        ...action.payload,
+        createdAt: moment().format("DD-MM-YYYY, HH:mm"), // Add the createdAt property with the current date and time
+      };
+      state.products.push(newProduct);
       saveState(state.products);
     },
     removeProduct: (state, action: PayloadAction<number>) => {
