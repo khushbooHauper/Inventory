@@ -32,6 +32,11 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
     setCurrentPage(1);
   }, [searchQuery]);
 
+  
+  useEffect(() => {
+    dispatch(loadProducts(products));
+  }, [dispatch]);
+
   // Filter the products based on the search query
   const filteredProducts = products.filter((product) => {
     const productName = product.name.toLowerCase();
@@ -68,9 +73,6 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
   const handleShow = () => setShow(true);
   // const handleclose = () => setShow(false);
 
-  useEffect(() => {
-    dispatch(loadProducts(products));
-  }, [dispatch]);
 
   const handleRemoveProduct = async (productId: number): Promise<void> => {
     dispatch(removeProduct(productId));
@@ -138,7 +140,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                 <th>SKU</th>
                 <th>Name</th>
                 <th>Brand</th>
-                {/* <th>Model</th> */}
+                <th>Model</th>
                 <th>Price</th>
                 <th>Weight</th>
                 <th>Status</th>
@@ -155,7 +157,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                     )}
                   </td>
                   <td data-th="Brand">{p.brand}</td>
-                  {/* <td data-th="Model">{p.model}</td> */}
+                  <td data-th="Model">{p.model}</td>
                   <td data-th="Price">{p.price}</td>
                   <td data-th="Weight">{p.weight}</td>
                   <td data-th="Status">
@@ -180,7 +182,7 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                       <span>Actions</span> {" "}<i className="fa fa-angle-down"></i>
+                       <span style={{fontSize:'12px'}}>Actions</span> {" "}<i className="fa fa-angle-down"></i>
                       </Link>
                       <ul
                         className="dropdown-menu dropdown-menu-dark text-small shadow"

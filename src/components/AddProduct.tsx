@@ -1,14 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import "../assets/styles/addproduct.scss";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Product,
-  addProduct,
-  loadProducts,
-  updateProduct,
+ addProduct,
+updateProduct,
 } from "../redux/features/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
@@ -81,8 +77,13 @@ const AddProduct = () => {
       }
     } else {
       // Performing add operation
-      const highestId = Math.max(...products.map((product) => product.id));
-      const newId = highestId + 1;
+      let newId = 1; // Set a default ID
+
+      if (products.length > 0) {
+        // Check if there are existing products
+        const highestId = Math.max(...products.map((product) => product.id));
+        newId = highestId + 1;
+      }
       dispatch(
         addProduct({
           id: newId,
@@ -385,18 +386,21 @@ const AddProduct = () => {
                 )}
               </div>
               <div>
-                <input
-                  placeholder="status"
-                  className="input"
-                  name="status"
-                  value={formik.values.status}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.status && formik.errors.status && (
-                  <div className="error-message">{formik.errors.status}</div>
-                )}
-              </div>
+              <select
+                className="input"
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">Select status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              {formik.touched.status && formik.errors.status && (
+                <div className="error-message">{formik.errors.status}</div>
+              )}
+            </div>
             </div>
             <div className="box-6-inside">
               <div>
