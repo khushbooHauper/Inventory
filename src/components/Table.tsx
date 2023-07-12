@@ -18,8 +18,10 @@ import ViewProduct from "../modals/ViewProduct";
 import { Pagination } from "react-bootstrap";
 import { TableProductProps } from "../types/table";
 
-
-const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
+const TableProduct: React.FC<TableProductProps> = ({
+  searchQuery,
+  filteredProducts,
+}) => {
   const products = useSelector((state: RootState) => state.product.products);
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -31,17 +33,9 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
     setCurrentPage(1);
   }, [searchQuery]);
 
-  
   useEffect(() => {
     dispatch(loadProducts(products));
   }, [dispatch]);
-
-  // Filter the products based on the search query
-  const filteredProducts = products.filter((product) => {
-    const productName = product.name.toLowerCase();
-    const query = searchQuery.toLowerCase();
-    return productName.includes(query);
-  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Number of items to display per page
@@ -71,7 +65,6 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
 
   const handleShow = () => setShow(true);
   // const handleclose = () => setShow(false);
-
 
   const handleRemoveProduct = async (productId: number): Promise<void> => {
     dispatch(removeProduct(productId));
@@ -122,7 +115,6 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
     handleCancelStatus,
     idToStatus,
     loadingStatus,
-   
   } = useStatus(toggleStatus, true);
 
   const handleStatus = (id: number) => {
@@ -148,17 +140,16 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
               </tr>
               {displayedProducts.map((p, index) => (
                 <tr key={`${p.id}-${index}`}>
-                 
-                 <td data-th="Image">
-                  {p.selectedImages[0] && typeof p.selectedImages[0] === 'string' && (
-                    <img
-                      src={p.selectedImages[0]}
-                      alt="Product Images"
-                      className="image-table-preview"
-                      
-                    />
-                  )}
-                </td>
+                  <td data-th="Image">
+                    {p.selectedImages[0] &&
+                      typeof p.selectedImages[0] === "string" && (
+                        <img
+                          src={p.selectedImages[0]}
+                          alt="Product Images"
+                          className="image-table-preview"
+                        />
+                      )}
+                  </td>
                   <td data-th="Name">
                     {p.name.length > 30 ? (
                       <span title={p.name}>{p.name.substring(0, 10)}</span>
@@ -166,8 +157,8 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                       p.name
                     )}
                   </td>
-                  <td data-th="Category">{p.category.slice(0,10)}</td>
-                  <td data-th="SubCategory">{p.subcategory.slice(0,10)}</td>
+                  <td data-th="Category">{p.category.slice(0, 10)}</td>
+                  <td data-th="SubCategory">{p.subcategory.slice(0, 10)}</td>
                   <td data-th="Price">{p.price}</td>
                   <td data-th="Status">
                     <Badge
@@ -177,12 +168,11 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                       {p.status}
                     </Badge>
                   </td>
-                  <td data-th="CreatedAt">{p.createdAt.slice(0,10)}</td>
+                  <td data-th="CreatedAt">{p.createdAt.slice(0, 10)}</td>
                   <td data-th="Actions" className="actions">
                     <div
                       className={`dropdown dropdown-container 
                       }`}
-                      
                     >
                       <Link
                         to="#"
@@ -191,19 +181,18 @@ const TableProduct: React.FC<TableProductProps> = ({ searchQuery }) => {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
-                       <span style={{fontSize:'12px'}}>Actions</span> {" "}<i className="fa fa-angle-down"></i>
+                        <span style={{ fontSize: "12px" }}>Actions</span>{" "}
+                        <i className="fa fa-angle-down"></i>
                       </Link>
                       <ul
                         className="dropdown-menu dropdown-menu-dark text-small shadow"
                         aria-labelledby="dropdownUser1"
-                       
                       >
                         <li>
                           <Link
                             className="dropdown-item"
                             to="#"
                             onClick={() => handleOpenView(p)}
-                            
                           >
                             View
                           </Link>

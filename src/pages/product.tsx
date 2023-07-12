@@ -3,38 +3,45 @@ import TableProduct from "../components/Table";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/product.scss";
-import { debounce } from "lodash"; // Import the debounce function
+import { debounce } from "lodash"; 
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { Product } from "../types/product";
 
-function Product() {
+function ProductPage() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
+  const products = useSelector((state: RootState) => state.product.products);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const handleAddProduct = () => {
     navigate("/add-product");
   };
 
-  const handleSearchInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setSearchQuery(query);
   };
+  const filter = () => {
+    // Perform the filtering logic when the debounced search query changes
+    const filtered: Product[] = products.filter((product) => {
+      const productName = product.name.toLowerCase();
+      const query = searchQuery.toLowerCase();
+      return productName.includes(query);
+    });
+    setFilteredProducts(filtered);
+  };
 
-  // Debounce the search query with a delay of 2000ms
-  const debouncedSearch = debounce((query: string) => {
-     // Perform the search logic here
-     console.log("Search query:", query);
-   }, 1000);
-
+  const delayedFilter = debounce(filter, 1000);
   useEffect(() => {
-    // Call the debounced search function when the search query changes
-    debouncedSearch(searchQuery);
+    delayedFilter();
 
-    // Clean up the debounce timer when the component unmounts
     return () => {
-      debouncedSearch.cancel();
+      delayedFilter.cancel();
     };
-  }, [searchQuery]);
+  }, [searchQuery, delayedFilter]);
+
   return (
     <div className="product">
       <div className="top-box">
@@ -44,7 +51,7 @@ function Product() {
             className="search"
             placeholder="search product..."
             value={searchQuery}
-            onChange={handleSearchInputChange}
+            onChange={handleChange}
           />
         </div>
         <Button variant="dark" onClick={handleAddProduct}>
@@ -52,10 +59,13 @@ function Product() {
         </Button>
       </div>
       <div className="table-box">
-        <TableProduct searchQuery={searchQuery} />
+        <TableProduct
+          searchQuery={searchQuery}
+          filteredProducts={filteredProducts}
+        />
       </div>
     </div>
   );
 }
 
-export default Product;
+export default ProductPage;

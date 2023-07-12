@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import "../assets/styles/addproduct.scss";
 import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct, updateProduct } from "../redux/features/productSlice";
+import {
+ addProduct,
+updateProduct,
+} from "../redux/features/productSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { useEdit } from "../hooks/useEdit";
@@ -12,53 +15,23 @@ import { validationSchemaAddProduct } from "../validation/addproduct";
 import moment from "moment";
 import { Category } from "../types/product";
 
+
+
+
+
 const categories: Category[] = [
-  {
-    name: "Electronics",
-    subcategories: ["Mobile Phones", "Laptops", "Televisions", "Watches"],
-  },
-  {
-    name: "Apparel",
-    subcategories: [
-      "Men's Clothing",
-      "Women's Clothing",
-      "Children's Clothing",
-    ],
-  },
-  {
-    name: "Home and Kitchen",
-    subcategories: ["Cookware", "Appliances", "Furniture"],
-  },
-  {
-    name: "Beauty and Personal Care",
-    subcategories: ["Skincare", "Haircare", "Makeup"],
-  },
-  {
-    name: "Health and Fitness",
-    subcategories: ["Fitness Equipment", "Supplements", "Yoga and Meditation"],
-  },
-  {
-    name: "Automotive",
-    subcategories: [
-      "Car Accessories",
-      "Motorcycle Accessories",
-      "Tools and Equipment",
-    ],
-  },
+  { name: "Electronics", subcategories: ["Mobile Phones", "Laptops", "Televisions","Watches"] },
+  { name: "Apparel", subcategories: ["Men's Clothing", "Women's Clothing", "Children's Clothing"] },
+  { name: "Home and Kitchen", subcategories: ["Cookware", "Appliances", "Furniture"] },
+  { name: "Beauty and Personal Care", subcategories: ["Skincare", "Haircare", "Makeup"] },
+  { name: "Health and Fitness", subcategories: ["Fitness Equipment", "Supplements", "Yoga and Meditation"] },
+  { name: "Automotive", subcategories: ["Car Accessories", "Motorcycle Accessories", "Tools and Equipment"] },
   { name: "Books and Media", subcategories: ["Books", "Music", "Movies"] },
-  {
-    name: "Toys and Games",
-    subcategories: ["Action Figures", "Board Games", "Puzzles"],
-  },
-  {
-    name: "Sports and Outdoor",
-    subcategories: ["Outdoor Recreation", "Sports Equipment", "Camping Gear"],
-  },
-  {
-    name: "Industrial and Tools",
-    subcategories: ["Power Tools", "Safety Equipment", "Hardware"],
-  },
+  { name: "Toys and Games", subcategories: ["Action Figures", "Board Games", "Puzzles"] },
+  { name: "Sports and Outdoor", subcategories: ["Outdoor Recreation", "Sports Equipment", "Camping Gear"] },
+  { name: "Industrial and Tools", subcategories: ["Power Tools", "Safety Equipment", "Hardware"] }
 ];
+
 
 const AddProduct = () => {
   const dispatch = useDispatch();
@@ -134,7 +107,7 @@ const AddProduct = () => {
       dispatch(
         addProduct({
           id: newId,
-          createdAt: moment().format("DD-MM-YYYY, HH:mm"),
+          createdAt: moment().format("DD-MM-YYYY, HH:mm"), 
           ...values,
         })
       );
@@ -196,26 +169,18 @@ const AddProduct = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
 
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const category = event.target.value;
     setSelectedCategory(category);
     setSelectedSubcategory("");
   };
 
-  const handleSubcategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handleSubcategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const subcategory = event.target.value;
     setSelectedSubcategory(subcategory);
   };
-  const selectedCategoryData = categories.find(
-    (category) => category.name === selectedCategory
-  );
-  const subcategories = selectedCategoryData
-    ? selectedCategoryData.subcategories
-    : [];
+  const selectedCategoryData = categories.find((category) => category.name === selectedCategory);
+  const subcategories = selectedCategoryData ? selectedCategoryData.subcategories : [];
   return (
     <div>
       <div className="addProduct">
@@ -234,7 +199,7 @@ const AddProduct = () => {
                   onBlur={formik.handleBlur}
                 />
                 <div>
-                  {formik.errors.name && (
+                  {formik.touched.name && formik.errors.name && (
                     <div className="error-message">{formik.errors.name}</div>
                   )}
                 </div>
@@ -252,7 +217,7 @@ const AddProduct = () => {
                 />
 
                 <div>
-                  {formik.errors.brand && (
+                  {formik.touched.brand && formik.errors.brand && (
                     <div className="error-message">{formik.errors.brand}</div>
                   )}
                 </div>
@@ -270,7 +235,7 @@ const AddProduct = () => {
                   onBlur={formik.handleBlur}
                 />
                 <div>
-                  {formik.errors.model && (
+                  {formik.touched.model && formik.errors.model && (
                     <div className="error-message">{formik.errors.model}</div>
                   )}
                 </div>
@@ -291,7 +256,7 @@ const AddProduct = () => {
                   onBlur={formik.handleBlur}
                 />
                 <div>
-                  {formik.errors.modelNumber && (
+                  {formik.touched.modelNumber && formik.errors.modelNumber && (
                     <div className="error-message">
                       {formik.errors.modelNumber}
                     </div>
@@ -310,7 +275,7 @@ const AddProduct = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               ></textarea>
-              {formik.errors.des && (
+              {formik.touched.des && formik.errors.des && (
                 <div className="error-message">{formik.errors.des}</div>
               )}
             </div>
@@ -318,55 +283,53 @@ const AddProduct = () => {
           <div className="box-2">
             <h5>Category</h5>
             <div className="box-2b">
-              <div>
-                <select
-                  id="category"
-                  className="input"
-                  name="category"
-                  value={formik.values.category}
-                  onChange={(event) => {
-                    formik.handleChange(event);
-                    handleCategoryChange(event);
-                  }}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="">Select category</option>
-                  {categories.map((category) => (
-                    <option key={category.name} value={category.name}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-                {formik.errors.category && (
-                  <div className="error-message">{formik.errors.category}</div>
-                )}
-              </div>
+            <div>
+            <select
+          id="category"
+          className="input"
+          name="category"
+          value={formik.values.category}
+          onChange={(event) => {
+            formik.handleChange(event);
+            handleCategoryChange(event);
+          }}
+          onBlur={formik.handleBlur}
+        >
+          <option value="">Select category</option>
+          {categories.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+        {formik.touched.category && formik.errors.category && (
+          <div className="error-message">{formik.errors.category}</div>
+        )}
+            </div>
 
               <div>
-                <select
-                  id="subcategory"
-                  className="input"
-                  name="subcategory"
-                  value={formik.values.subcategory}
-                  onChange={(event) => {
-                    formik.handleChange(event);
-                    handleSubcategoryChange(event);
-                  }}
-                  onBlur={formik.handleBlur}
-                  disabled={!selectedCategory}
-                >
-                  <option value="">Select subcategory</option>
-                  {subcategories.map((subcategory) => (
-                    <option key={subcategory} value={subcategory}>
-                      {subcategory}
-                    </option>
-                  ))}
-                </select>
-                {formik.errors.subcategory && (
-                  <div className="error-message">
-                    {formik.errors.subcategory}
-                  </div>
-                )}
+              <select
+          id="subcategory"
+          className="input"
+          name="subcategory"
+          value={formik.values.subcategory}
+          onChange={(event) => {
+            formik.handleChange(event);
+            handleSubcategoryChange(event);
+          }}
+          onBlur={formik.handleBlur}
+          disabled={!selectedCategory}
+        >
+          <option value="">Select subcategory</option>
+          {subcategories.map((subcategory) => (
+            <option key={subcategory} value={subcategory}>
+              {subcategory}
+            </option>
+          ))}
+        </select>
+        {formik.touched.subcategory && formik.errors.subcategory && (
+          <div className="error-message">{formik.errors.subcategory}</div>
+        )}
               </div>
             </div>
           </div>
@@ -387,7 +350,7 @@ const AddProduct = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.errors.quantity && (
+                {formik.touched.quantity && formik.errors.quantity && (
                   <div className="error-message">{formik.errors.quantity}</div>
                 )}
               </div>
@@ -400,7 +363,7 @@ const AddProduct = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.errors.sku && (
+                {formik.touched.sku && formik.errors.sku && (
                   <div className="error-message">{formik.errors.sku}</div>
                 )}
               </div>
@@ -473,26 +436,26 @@ const AddProduct = () => {
                   onBlur={formik.handleBlur}
                 />
 
-                {formik.errors.weight && (
+                {formik.touched.weight && formik.errors.weight && (
                   <div className="error-message">{formik.errors.weight}</div>
                 )}
               </div>
               <div>
-                <select
-                  className="input"
-                  name="status"
-                  value={formik.values.status}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                >
-                  <option value="">Select status</option>
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-                {formik.errors.status && (
-                  <div className="error-message">{formik.errors.status}</div>
-                )}
-              </div>
+              <select
+                className="input"
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                <option value="">Select status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              {formik.touched.status && formik.errors.status && (
+                <div className="error-message">{formik.errors.status}</div>
+              )}
+            </div>
             </div>
             <div className="box-6-inside">
               <div>
@@ -505,7 +468,7 @@ const AddProduct = () => {
                   onBlur={formik.handleBlur}
                 />
 
-                {formik.errors.dimensions && (
+                {formik.touched.dimensions && formik.errors.dimensions && (
                   <div className="error-message">
                     {formik.errors.dimensions}
                   </div>
@@ -520,7 +483,7 @@ const AddProduct = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.errors.manufacturer && (
+                {formik.touched.manufacturer && formik.errors.manufacturer && (
                   <div className="error-message">
                     {formik.errors.manufacturer}
                   </div>
@@ -538,7 +501,7 @@ const AddProduct = () => {
                 onBlur={formik.handleBlur}
               />
 
-              {formik.errors.price && (
+              {formik.touched.price && formik.errors.price && (
                 <div className="error-message">{formik.errors.price}</div>
               )}
             </div>
