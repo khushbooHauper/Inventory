@@ -20,7 +20,31 @@ function Login() {
   ) => {
     event.preventDefault();
 
-    const isFormValid = formik.values.email && formik.values.password; // Checking if all fields are filled
+    const isEmailEmpty = !formik.values.email.trim();
+    const isPasswordEmpty = !formik.values.password.trim();
+    
+    if (isEmailEmpty && isPasswordEmpty) {
+      formik.setTouched({
+        email: true,
+        password: true,
+      });
+    } else if (isEmailEmpty) {
+      formik.setTouched({
+        email: true,
+        password: formik.touched.password,
+      });
+    } else if (isPasswordEmpty) {
+      formik.setTouched({
+        email: formik.touched.email,
+        password: true,
+      });
+    }
+    
+    const isFormValid =
+      (formik.touched.email && formik.values.email.trim() !== "") &&
+      (formik.touched.password && formik.values.password.trim() !== "");
+    
+
 
     if (isFormValid) {
       try {
@@ -42,9 +66,7 @@ function Login() {
         console.error("Login error:", error);
         toast.error("An error occurred during login.");
       }
-    } else {
-      toast.error("Please fill all the required fields.");
-    }
+    } 
   };
 
   const formik = useFormik({

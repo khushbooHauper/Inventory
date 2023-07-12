@@ -36,7 +36,7 @@ function OffCanvas() {
   return (
     <>
       <Navbar expand={expand} className="bg-body-tertiary mb-3">
-        <Container fluid>
+        <Container fluid >
           <Navbar.Brand href="#" className="m-2">
             Inventory
           </Navbar.Brand>
@@ -51,6 +51,7 @@ function OffCanvas() {
             placement="end"
             show={showOffcanvas}
             onHide={() => setShowOffcanvas(false)}
+            style={{ backgroundColor: "rgb(216, 187, 250)" }}
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title id="offcanvasNavbarLabel">
@@ -68,6 +69,12 @@ function OffCanvas() {
                   <i className="fa fa-home" aria-hidden="true"></i>
                   <span>Home</span>
                 </Nav.Link>
+                <hr className="sidebar-divider" />
+                <Nav.Link as={Link} to="/" className="side-menu-link">
+          <i className="fa fa-shopping-cart" aria-hidden="true"></i>
+          <span>POS</span>
+        </Nav.Link>
+        <hr className="sidebar-divider" />
                 <NavDropdown
                   title={
                     <>
@@ -93,7 +100,14 @@ function OffCanvas() {
                     Product List
                   </NavDropdown.Item>
                 </NavDropdown>
+                <hr className="sidebar-divider" />
+                <Nav.Link as={Link} to="/" className="side-menu-link">
+          <i className="fa fa-money-check-alt" aria-hidden="true"></i>
+          <span>Income</span>
+        </Nav.Link>
+        <hr className="sidebar-divider" />
               </Nav>
+              
               <div className="dropdown">
                 <Link
                   to="#"

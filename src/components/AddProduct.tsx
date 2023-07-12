@@ -182,7 +182,7 @@ const AddProduct = () => {
   const selectedCategoryData = categories.find((category) => category.name === selectedCategory);
   const subcategories = selectedCategoryData ? selectedCategoryData.subcategories : [];
   return (
-    <div>
+    <div style={{maxHeight:'100vh',overflowY:'scroll'}}>
       <div className="addProduct">
         <div className="left-boxes">
           <div className="box-1">
