@@ -138,7 +138,7 @@ const TableProduct: React.FC<TableProductProps> = ({
                 <th>CreatedAt</th>
                 <th>Actions</th>
               </tr>
-              {displayedProducts.map((p, index) => (
+              {displayedProducts && displayedProducts.map((p, index) => (
                 <tr key={`${p.id}-${index}`}>
                   <td data-th="Image">
                     {p.selectedImages[0] &&
