@@ -51,7 +51,7 @@ const TableProduct: React.FC<TableProductProps> = ({
   // Calculate start and end index for displayed items
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedProducts = filteredProducts.slice(startIndex, endIndex);
+  const displayedProducts = filteredProducts?.slice(startIndex, endIndex);
 
   const handleOpenView = (product: any) => {
     setShowView(true);
@@ -157,8 +157,8 @@ const TableProduct: React.FC<TableProductProps> = ({
                       p.name
                     )}
                   </td>
-                  <td data-th="Category">{p.category.slice(0, 10)}</td>
-                  <td data-th="SubCategory">{p.subcategory.slice(0, 10)}</td>
+                  <td data-th="Category">{p.category && p.category.slice(0, 10)}</td>
+                  <td data-th="SubCategory">{p.subcategory && p.subcategory.slice(0, 10)}</td>
                   <td data-th="Price">{p.price}</td>
                   <td data-th="Status">
                     <Badge
@@ -168,7 +168,7 @@ const TableProduct: React.FC<TableProductProps> = ({
                       {p.status}
                     </Badge>
                   </td>
-                  <td data-th="CreatedAt">{p.createdAt.slice(0, 10)}</td>
+                  <td data-th="CreatedAt">{p.createdAt && p.createdAt.slice(0, 10)}</td>
                   <td data-th="Actions" className="actions">
                     <div
                       className={`dropdown dropdown-container 
