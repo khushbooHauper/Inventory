@@ -3,10 +3,10 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Home from "./Home";
-import Login from "./login";
 import Product from "./product";
 import AddProduct from "../components/AddProduct";
 import OffCanvas from "../components/OffCanvas";
+import Login from "./Login";
 
 function Dashboard() {
   const [isMobileView, setIsMobileView] = useState(false);

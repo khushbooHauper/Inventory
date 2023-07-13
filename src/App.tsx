@@ -2,9 +2,9 @@ import React,{useContext} from "react";
 import "./App.scss";
 import Dashboard from "./pages/dashboard";
 import { AuthContext } from "./context/AuthContext";
-import Login from "./pages/login";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Login from "./pages/Login";
 
 
 function App() {

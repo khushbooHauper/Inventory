@@ -5,12 +5,16 @@
   height: 100vh;
   // background: linear-gradient(to left, rgb(213, 191, 194), white);
   background: linear-gradient(to left, rgb(216, 187, 250), white);
+
   form {
     width: 300px;
-  
+
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     .form-group {
       margin-bottom: 20px;
-      .error-message{
+      .error-message {
         color: red;
         font-size: 10px;
         padding: 10px;
@@ -19,23 +23,22 @@
         margin-bottom: 5px;
         font-weight: bold;
       }
-      
+
       input {
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
         width: 100%;
       }
-      
     }
-    
+
     .password-input {
       position: relative;
-      
+
       input {
         padding-right: 30px;
       }
-      
+
       i {
         position: absolute;
         top: 50%;
@@ -43,16 +46,21 @@
         transform: translateY(-50%);
         cursor: pointer;
       }
-      
     }
-    
-    button {
+
+    .login-button {
       padding: 10px;
-      background-color: #333;
+      background-color: rgb(128, 18, 128);
       color: #fff;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      width: 100%;
+    }
+
+    .login-button.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 }
