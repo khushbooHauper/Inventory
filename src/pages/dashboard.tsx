@@ -6,7 +6,7 @@ import Home from "./Home";
 import Product from "./product";
 import AddProduct from "../components/AddProduct";
 import OffCanvas from "../components/OffCanvas";
-import Login from "./Login";
+import Login from "./login";
 
 function Dashboard() {
   const [isMobileView, setIsMobileView] = useState(false);

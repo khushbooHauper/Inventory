@@ -4,7 +4,7 @@ import Dashboard from "./pages/dashboard";
 import { AuthContext } from "./context/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 
 
 function App() {
