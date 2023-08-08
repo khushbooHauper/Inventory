@@ -39,13 +39,8 @@ const Home = () => {
       return `${value.toFixed(2)}`;
     }
   };
-  
+
   const formattedValue = formatInventoryValue(totalInventoryValue);
-
-
-
-
-
 
   useEffect(() => {
     // Dispatch an action to load the products if the state is not already populated
@@ -94,11 +89,11 @@ const Home = () => {
           },
         },
       });
-    }else if (!totalProducts && chart1Ref.current) {
+    } else if (!totalProducts && chart1Ref.current) {
       if (chart1Instance.current) {
         chart1Instance.current.destroy();
       }
-    
+
       chart1Instance.current = new Chart(chart1Ref.current, {
         type: "bar",
         data: {
@@ -166,7 +161,7 @@ const Home = () => {
       if (chart2Instance.current) {
         chart2Instance.current.destroy();
       }
-    
+
       chart2Instance.current = new Chart(chart2Ref.current, {
         type: "pie" as ChartType,
         data: {
@@ -175,7 +170,7 @@ const Home = () => {
             {
               label: "Quantity Sold",
               data: [1],
-              backgroundColor: ["grey"], 
+              backgroundColor: ["grey"],
             },
           ],
         },
@@ -192,7 +187,6 @@ const Home = () => {
               borderColor: "rgba(255, 255, 255, 0.8)",
             },
           },
-          
         },
       } as ChartConfiguration<"pie">);
     }
@@ -226,7 +220,7 @@ const Home = () => {
   };
 
   return (
-    <div style={{maxHeight:'100vh',overflowY:'scroll'}}>
+    <div  className="homepage-container">
       <div className="home">
         <Card className="card">
           <Card.Body>
@@ -272,9 +266,8 @@ const Home = () => {
               your most popular products and analyze their sales performance.
             </Card.Text>
             <div className="pie">
-            <canvas ref={chart2Ref} ></canvas>
+              <canvas ref={chart2Ref}></canvas>
             </div>
-           
           </Card.Body>
         </Card>
       </div>

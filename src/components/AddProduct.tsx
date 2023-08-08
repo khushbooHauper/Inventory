@@ -78,6 +78,7 @@ const AddProduct = () => {
 
   const handleLabelClick = () => {
     fileInputRef.current?.click(); // Trigger the click event of the hidden file input
+    formik.setFieldTouched("selectedImages");
   };
 
   const handleImageChange = (
@@ -115,32 +116,64 @@ const AddProduct = () => {
     const { ...values } = formik.values; // Extracting the form values
 
     if (productId) {
+      // Check if the new product name or SKU already exists
+      const existingProductWithName = products.find(
+        (product) =>
+          product.name === values.name  || product.sku === values.sku && product.id !== parseInt(productId)
+      );
+
+      // const existingProductWithSKU = products.find(
+      //   (product) =>
+      //     product.sku === values.sku && product.id !== parseInt(productId)
+      // );
+
+      if (existingProductWithName) {
+        toast.error("Duplicate product name or SKU found");
+        return; // Return early to prevent updating
+      }
+
       // Performing update operation
       try {
         await handleUpdateProduct(parseInt(productId), values);
         AfterEdit(true, null);
+        navigate("/products");
       } catch (error) {
         AfterEdit(false, error);
       }
     } else {
       // Performing add operation
-      let newId = 1; // Set a default ID
 
-      if (products.length > 0) {
-        // Check if there are existing products
-        const highestId = Math.max(...products.map((product) => product.id));
-        newId = highestId + 1;
-      }
-      dispatch(
-        addProduct({
-          id: newId,
-          createdAt: moment().format("DD-MM-YYYY, HH:mm"),
-          ...values,
-        })
+      // Check if the new product name or SKU already exists
+      const existingProductWithName = products.find(
+        (product) => product.name === values.name
       );
-      toast.success("Product Added successfully");
+
+      const existingProductWithSKU = products.find(
+        (product) => product.sku === values.sku
+      );
+
+      if (existingProductWithName || existingProductWithSKU) {
+        toast.error("Duplicate product name or SKU found");
+      } else {
+        let newId = 1; // Set a default ID
+
+        if (products.length > 0) {
+          const highestId = Math.max(...products.map((product) => product.id));
+          newId = highestId + 1;
+        }
+
+        dispatch(
+          addProduct({
+            id: newId,
+            createdAt: moment().format("DD-MM-YYYY, HH:mm"),
+            ...values,
+          })
+        );
+
+        toast.success("Product Added successfully");
+        navigate("/products");
+      }
     }
-    navigate("/products");
   };
 
   const handleUpdateProduct = async (
@@ -181,7 +214,7 @@ const AddProduct = () => {
       selectedImages: product?.selectedImages || [],
       category: product?.category || "",
       subcategory: product?.subcategory || "",
-      status: product?.status || "",
+      status: product?.status || "active",
       price: product?.price || null,
       weight: product?.weight || null,
       dimensions: product?.dimensions || "",
@@ -217,8 +250,53 @@ const AddProduct = () => {
   const subcategories = selectedCategoryData
     ? selectedCategoryData.subcategories
     : [];
+
+  // Use local storage to save the edited product data
+  useEffect(() => {
+    if (product) {
+      localStorage.setItem("editedProduct", JSON.stringify(product));
+    }
+  }, [product]);
+
+  // Retrieve the edited product data from local storage on component mount
+  useEffect(() => {
+    const editedProductDataString = localStorage.getItem("editedProduct");
+    if (editedProductDataString !== null) {
+      const editedProductData = JSON.parse(editedProductDataString);
+      formik.setValues(editedProductData);
+      // Update the selected category and subcategory
+      setSelectedCategory(editedProductData.category || "");
+      setSelectedSubcategory(editedProductData.subcategory || "");
+    }else{
+      if (!id) {
+        formik.setValues({
+          name: "", 
+          brand: "",
+          model: "",
+          modelNumber: null,
+          sku: "",
+          des: "",
+          selectedImages: [],
+          category: "",
+          subcategory: "",
+          status: "active",
+          price: null,
+          weight: null,
+          dimensions: "",
+          manufacturer: "",
+          quantity: null,
+        });
+      }
+      setSelectedCategory("");
+      setSelectedSubcategory("");
+    }
+    // Clean up the localStorage when adding new product
+  if (!id) {
+    localStorage.removeItem("editedProduct");
+  }
+  }, []);
   return (
-    <div style={{ maxHeight: "100vh", overflowY: "scroll" }}>
+    <div>
       <div className="addProduct">
         <div className="left-boxes">
           <div className="box-1">
@@ -437,11 +515,12 @@ const AddProduct = () => {
                 onBlur={formik.handleBlur}
               />
 
-              {formik.errors.selectedImages && (
-                <div className="error-message">
-                  {formik.errors.selectedImages}
-                </div>
-              )}
+              {formik.touched.selectedImages &&
+                formik.errors.selectedImages && (
+                  <div className="error-message">
+                    {formik.errors.selectedImages}
+                  </div>
+                )}
 
               {formik.values.selectedImages.length > 0 && (
                 <div className="uploaded-images">
@@ -486,7 +565,6 @@ const AddProduct = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 >
-                  <option value="">Select status</option>
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>
                 </select>

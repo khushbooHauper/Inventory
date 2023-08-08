@@ -5,6 +5,7 @@ import axios from "axios";
 import { validationSchema } from "../validation/login";
 import { toast } from "react-toastify";
 import "../assets/styles/login.scss";
+import getUsers from "../utils/getUsers";
 
 const API_URL = process.env.PUBLIC_URL + "/api-response/login.json";
 
@@ -22,7 +23,8 @@ const Login = () => {
         password: password,
       };
 
-      const response = await axios.get(API_URL);
+      // post request comes here with payload above
+      const response = await getUsers(API_URL);
       const isSuccess = response.data.status;
 
       if (isSuccess) {

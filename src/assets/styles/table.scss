@@ -70,6 +70,11 @@
   color: #333;
   border-radius: 0.4em;
   overflow: hidden;
+  .search-not-found {
+    width: 1200px;
+    margin: "auto";
+    padding-top: 50px;
+  }
 }
 
 .rwd-table tr {
@@ -321,7 +326,7 @@ h1 {
   text-align: center;
   // margin-top: 50px;
   overflow-x: auto;
-  height: 400px; /* Set the desired height */
+  height: 700px; /* Set the desired height */
 }
 h3 {
   display: inline-block;
@@ -405,11 +410,26 @@ h3:after {
     display: flex;
     align-items: center;
   }
+  .container {
+    height: 400px; /* Set the desired height */
+  }
+  .rwd-table {
+    .search-not-found {
+      padding-top: 50px;
+      width: 350px;
+      margin: "auto";
+    }
+  }
 }
 @media (min-width: 767px) and (max-width: 1024px) {
   .rwd-table {
     .fixed-badge-width {
       width: 50px; /* Set the desired width */
+    }
+    .search-not-found {
+      padding-top: 50px;
+      width: 700px;
+      margin: "auto";
     }
   }
 }

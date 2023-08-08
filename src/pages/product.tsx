@@ -3,7 +3,7 @@ import TableProduct from "../components/Table";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/product.scss";
-import { debounce } from "lodash"; 
+import { debounce } from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Product } from "../types/product";
@@ -40,7 +40,7 @@ function ProductPage() {
     return () => {
       delayedFilter.cancel();
     };
-  }, [searchQuery, delayedFilter]);
+  }, [searchQuery, products]);
 
   return (
     <div className="product">

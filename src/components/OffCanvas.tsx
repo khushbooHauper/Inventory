@@ -79,7 +79,7 @@ function OffCanvas() {
                   title={
                     <>
                       <i className="fa fa-shopping-bag" aria-hidden="true"></i>{" "}
-                      <Link to='/products' style={{textDecoration:'none',color:'black'}}>Products</Link>
+                      <Link to='/products' className="text-decoration-none text-dark">Products</Link>
                     </>
                   }
                   id="offcanvasNavbarDropdown"

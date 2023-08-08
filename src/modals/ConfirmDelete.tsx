@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
-import { Modal,Button} from 'react-bootstrap';
-import { ConfirmProps } from '../types/confirmDelete';
+import React, { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
+import { ConfirmProps } from "../types/confirmDelete";
 
-
-
-const Confirm: React.FC<ConfirmProps> = ({ onClick, handleCancel, show, disabled }) => {
+const Confirm = ({
+  onClick,
+  handleCancel,
+  show,
+  disabled,
+  confirmName,
+}: ConfirmProps) => {
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(disabled);
-
+  const [update, setUpdate] = useState(disabled);
   const handleDelete = async () => {
     setDeleteButtonDisabled(true);
     await onClick();
     setDeleteButtonDisabled(false);
+    handleCancel();
+  };
+  const handleUpdate = () => {
+    onClick();
     handleCancel();
   };
 
@@ -19,14 +27,28 @@ const Confirm: React.FC<ConfirmProps> = ({ onClick, handleCancel, show, disabled
       <Modal.Header closeButton>
         <Modal.Title>Confirmation</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Are you sure you want to delete?</Modal.Body>
+      <Modal.Body>Are you sure you want to {confirmName}?</Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleCancel} disabled={deleteButtonDisabled}>
+        <Button
+          variant="secondary"
+          onClick={handleCancel}
+          disabled={deleteButtonDisabled}
+        >
           Cancel
         </Button>
-        <Button variant="danger" onClick={handleDelete} disabled={deleteButtonDisabled}>
-          {deleteButtonDisabled ? 'Deleting...' : 'Delete'}
-        </Button>
+        {confirmName === "delete" ? (
+          <Button
+            variant="danger"
+            onClick={handleDelete}
+            disabled={deleteButtonDisabled}
+          >
+            {deleteButtonDisabled ? "Deleting..." : "Delete"}
+          </Button>
+        ) : (
+          <Button variant="warning" onClick={handleUpdate} disabled={disabled}>
+            {update ? "updating..." : "update"}
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );

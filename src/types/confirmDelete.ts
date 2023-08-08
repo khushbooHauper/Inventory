@@ -3,4 +3,5 @@ export type ConfirmProps = {
   handleCancel: () => void;
   show: boolean;
   disabled: boolean;
+  confirmName:string;
 }

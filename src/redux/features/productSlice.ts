@@ -3,8 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
 import { Product, ProductState } from "../../types/product";
 
-
-
 const initialState: ProductState = {
   products: [],
   totalWeight: 0,
@@ -20,10 +18,12 @@ const productSlice = createSlice({
       const serializedState = localStorage.getItem("products");
       if (serializedState) {
         state.products = JSON.parse(serializedState);
-        state.totalWeight = calculateTotalWeight( state.products);
-      state.totalProducts = state.products.length;
-      state.totalInventoryValue = calculateTotalInventoryValue( state.products);
-      saveState(state.products);
+        state.totalWeight = calculateTotalWeight(state.products);
+        state.totalProducts = state.products.length;
+        state.totalInventoryValue = calculateTotalInventoryValue(
+          state.products
+        );
+        saveState(state.products);
       }
     },
     addProduct: (state, action: PayloadAction<Product>) => {

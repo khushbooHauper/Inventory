@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Routes, Route } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-import Home from "./Home";
-import Product from "./product";
-import AddProduct from "../components/AddProduct";
 import OffCanvas from "../components/OffCanvas";
-import Login from "./login";
+import RoutesConfig from "../components/RoutesConfig";
+import '../assets/styles/dashboard.scss';
 
 function Dashboard() {
   const [isMobileView, setIsMobileView] = useState(false);
   const [isTabletView, setIsTabletView] = useState(false);
-
- 
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,11 +25,11 @@ function Dashboard() {
   }, []);
 
   return (
-    <div style={{ overflowX: "hidden" }}>
-      <Container fluid style={{ padding: "0px" }}>
+    <div className="overflow-hidden">
+      <Container fluid className="p-0">
         <Row>
           {isMobileView || isTabletView ? (
-            <Col sm={12} xs={12} style={{ padding: "0px" }}>
+            <Col sm={12} xs={12} className="p-0">
               <OffCanvas />
             </Col>
           ) : (
@@ -46,13 +41,7 @@ function Dashboard() {
             sm={isMobileView || isTabletView ? 12 : 10}
             xs={isMobileView || isTabletView ? 12 : 10}
           >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/products" element={<Product />} />
-              <Route path="/add-product" element={<AddProduct />} />
-              <Route path="/add-product/:id" element={<AddProduct />} />
-            </Routes>
+            <RoutesConfig />
           </Col>
         </Row>
       </Container>

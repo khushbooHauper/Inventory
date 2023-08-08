@@ -20,9 +20,9 @@ export const validationSchemaAddProduct = Yup.object().shape({
     .typeError('Weight must be a number')
     .required('Weight is required')
     .positive('Weight must be a positive number'),
-    status: Yup.string().required('Status is required'),
+    status: Yup.string().oneOf(['active', 'inactive']),
     dimensions: Yup.string()
-    .matches(/^[0-9]+(\s*x\s*[0-9]+){2}$/, 'Invalid dimensions format, (Ex: length x width x height)')
+    .matches(/^[0-9]+(\s*x\s*[0-9]+){2}$/, '(Ex: length x width x height)')
     .required('Dimensions is required'),
     manufacturer: Yup.string().required("Manufacturer is required"),
     selectedImages: Yup.array()

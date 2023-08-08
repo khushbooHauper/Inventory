@@ -11,12 +11,11 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import useDelete from "../hooks/useDelete";
 import Confirm from "../modals/ConfirmDelete";
-import { Badge } from "react-bootstrap";
-import ConfirmStatus from "../modals/ConfirmStatus";
 import useStatus from "../hooks/useStatus";
 import ViewProduct from "../modals/ViewProduct";
-import { Pagination } from "react-bootstrap";
 import { TableProductProps } from "../types/table";
+import ProductRow from "./ProductRow";
+import PaginationComponent from "./Pagination";
 
 const TableProduct: React.FC<TableProductProps> = ({
   searchQuery,
@@ -38,7 +37,7 @@ const TableProduct: React.FC<TableProductProps> = ({
   }, [dispatch]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Number of items to display per page
+  const itemsPerPage = 10; // Number of items to display per page
 
   // Calculate total number of pages
   const totalPages = Math.ceil(products.length / itemsPerPage);
@@ -138,93 +137,20 @@ const TableProduct: React.FC<TableProductProps> = ({
                 <th>CreatedAt</th>
                 <th>Actions</th>
               </tr>
-              {displayedProducts && displayedProducts.map((p, index) => (
-                <tr key={`${p.id}-${index}`}>
-                  <td data-th="Image">
-                    {p.selectedImages[0] &&
-                      typeof p.selectedImages[0] === "string" && (
-                        <img
-                          src={p.selectedImages[0]}
-                          alt="Product Images"
-                          className="image-table-preview"
-                        />
-                      )}
-                  </td>
-                  <td data-th="Name">
-                    {p.name.length > 30 ? (
-                      <span title={p.name}>{p.name.substring(0, 10)}</span>
-                    ) : (
-                      p.name
-                    )}
-                  </td>
-                  <td data-th="Category">{p.category && p.category.slice(0, 10)}</td>
-                  <td data-th="SubCategory">{p.subcategory && p.subcategory.slice(0, 10)}</td>
-                  <td data-th="Price">{p.price}</td>
-                  <td data-th="Status">
-                    <Badge
-                      bg={p.status === "active" ? "success" : "danger"}
-                      className="fixed-badge-width"
-                    >
-                      {p.status}
-                    </Badge>
-                  </td>
-                  <td data-th="CreatedAt">{p.createdAt && p.createdAt.slice(0, 10)}</td>
-                  <td data-th="Actions" className="actions">
-                    <div
-                      className={`dropdown dropdown-container 
-                      }`}
-                    >
-                      <Link
-                        to="#"
-                        className="d-flex align-items-center text-dark text-decoration-none justify-content-center"
-                        id="dropdownUser1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <span style={{ fontSize: "12px" }}>Actions</span>{" "}
-                        <i className="fa fa-angle-down"></i>
-                      </Link>
-                      <ul
-                        className="dropdown-menu dropdown-menu-dark text-small shadow"
-                        aria-labelledby="dropdownUser1"
-                      >
-                        <li>
-                          <Link
-                            className="dropdown-item"
-                            to="#"
-                            onClick={() => handleOpenView(p)}
-                          >
-                            View
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            className="dropdown-item"
-                            to={`/add-product/${p.id}`}
-                          >
-                            Edit
-                          </Link>
-                        </li>
-                        <li
-                          className="dropdown-item cursor"
-                          onClick={() => onDelete(p.id)}
-                        >
-                          Delete
-                        </li>
-                        <li>
-                          <Link
-                            className="dropdown-item"
-                            to="#"
-                            onClick={() => handleStatus(p.id)}
-                          >
-                            Status
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {displayedProducts.length !== 0 ? (
+                displayedProducts &&
+                displayedProducts.map((p, index) => (
+                  <ProductRow
+                    key={`${p.id}-${index}`}
+                    product={p}
+                    handleOpenView={handleOpenView}
+                    onDelete={onDelete}
+                    handleStatus={handleStatus}
+                  />
+                ))
+              ) : (
+                <h6 className="search-not-found">Searched product not found</h6>
+              )}
 
               {showConfirmationDelete && idToDelete !== null && (
                 <Confirm
@@ -232,14 +158,16 @@ const TableProduct: React.FC<TableProductProps> = ({
                   handleCancel={handleCancelDelete}
                   show={show}
                   disabled={loadingDelete}
+                  confirmName={"delete"}
                 />
               )}
               {showConfirmationStatus && idToStatus !== undefined && (
-                <ConfirmStatus
+                <Confirm
                   onClick={() => statusFinally(idToStatus)}
                   handleCancel={handleCancelStatus}
                   show={show}
                   disabled={loadingStatus}
+                  confirmName={"update"}
                 />
               )}
               {showView && selectedProduct !== undefined && (
@@ -257,28 +185,12 @@ const TableProduct: React.FC<TableProductProps> = ({
           <h5>No Products Found</h5>
         </div>
       )}
-
       {products.length > 0 && (
-        <Pagination className="pagination">
-          <Pagination.Prev
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
-          {Array.from({ length: totalPages }, (_, index) => (
-            <Pagination.Item
-              key={index + 1}
-              active={currentPage === index + 1}
-              onClick={() => handlePageChange(index + 1)}
-              className={currentPage === index + 1 ? "active" : ""}
-            >
-              {index + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          handlePageChange={handlePageChange}
+        />
       )}
     </>
   );
